@@ -1,18 +1,8 @@
 <?php
     include '../db_connection.php';
     $conn = OpenCon();
-
-    // if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //     //connect data from the input field
-    //     $data = $_REQUEST['val1'];
-
-    //     if (empty($data)) {
-    //         echo "data is empty";
-    //     } else {
-    //         echo $data;
-    //     }
-    // }
-
+    $sql = "SELECT * FROM gestionale ORDER BY id DESC";
+    $result = $conn->query($sql);
     CloseCon($conn);
 ?>
 
@@ -22,14 +12,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../gestionale.css">
     <!-- bootstrap css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="../gestionale.css">
 </head>
 <body>
     <div id="container">
 
-        <header>
+    <header>
             <div id="logo">
                 <a href="../index.php"><p>Gestionale</p></a>
             </div>
@@ -38,35 +28,32 @@
             </div>
         </header>
 
-        <div>
-            <form action="insert.php" id="form-contratto" method="POST">
-                <!-- <label for="agente">
-                    agente:
-                </label> -->
-                <input type="text" name="agente" id="agente" value="agente">
-                <br>
-                <!-- <label for="nome-cliente">
-                    nome cliente:
-                </label> -->
-                <input type="text" name="nome-cliente" id="nome-cliente" value="nome cliente">
-                <br>
-                <!-- <label for="cognome-cliente">
-                    cognome cliente:
-                </label> -->
-                <input type="text" name="cognome-cliente" id="cognome-cliente" value="cognome cliente">
-                <br>
-                <!-- <label for="stato">
-                    stato:
-                </label> -->
-                <select name="stato" id="stato">
-                    <option value="attivo">attivo</option>
-                    <option value="elaborazione">in elaborazione</option>
-                    <option value="ko">ko</option>
-                </select>
-                <br>
-                <button type="submit" class="pulsante">invia</button>
-            </form>
-        </div>
+    <div id="bottone">
+        <a  id="add-client" href="addclient.php"><button>
+            Aggiungi Cliente
+        </button></a>
+    </div>
+
+    <div id="elenchi">
+
+        <?php 
+            while ($rows=$result->fetch_assoc())
+            {
+        ?>
+                <div id="elenco_contratti">
+
+                        <p><?php echo $rows['agente']; ?></p>
+                        <p><?php echo $rows['nome-cliente']; ?></p>
+                        <p><?php echo $rows['cognome-cliente']; ?></p>
+                        <p><?php echo $rows['stato']; ?></p>
+                
+                </div>
+
+        <?php
+            }
+        ?>
+
+    </div>
 
     </div>
         <!-- bootstrap js -->

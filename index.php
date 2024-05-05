@@ -1,25 +1,26 @@
 <?php
     include 'db_connection.php';
     $conn = OpenCon();
-    
-    echo "Connected Succesfully";
 
     if ($conn -> connect_error) {
         die("Connection failed: "
         . $conn->connect_error);
     }
-
-    // $sqlquery = "INSERT INTO gestionale VALUES ('kevin', 'adam', 'passaretti', '0', '0')";
-
-    // if ($conn -> query($sqlquery) === TRUE) {
-    // echo "record inserted succesfully!";
-    // } else {
-    // echo "Error: " . $sql . "<br>" . $conn->error;
-    // }
-
-    // loops till end of data
     $sql = "SELECT * FROM gestionale ORDER BY id DESC";
     $result = $conn->query($sql);
+    $i = 0;
+    $j = 0;
+    $z = 0;
+
+    while ($rows=$result->fetch_assoc())
+    {
+        if ($rows['stato'] === 'attivo')
+            $i += 1;
+        if ($rows['stato'] === 'elaborazio')
+            $j += 1;
+        if ($rows['stato'] === 'ko')
+            $z += 1;
+    }
     CloseCon($conn);
 ?>
 
@@ -52,43 +53,13 @@
                 <a  href="#"> asseganti </a>
                 <a  href="#"> fatturato</a>
             </div>
-
-            <?php
-            
-                while ($rows=$result->fetch_assoc())
-                 {
-                   
-                   
-            ?>
-            <div id="elenco_contratti">
-                <tr>
-                    <!-- <td><?php echo $rows['agente']; ?> </td>
-                    <td><?php echo $rows['nome-cliente']; ?> </td>
-                    <td><?php echo $rows['cognome-cliente']; ?> </td>
-                    <td><p>stato contratto</p> </td>
-                    <td><?php echo $rows['id']; ?> </td><br> -->
-                    
-                </tr>
-            </div>
-            <?php
-                 }
-            ?>
-
-            <!-- <div>
-                <ul>
-                    <li>contratti mensili:</li>
-                    <li>in convalida: 5</li>
-                    <li>ko: 20</li>
-                    <li>validi: 70</li>
-                </li>
-            </div> -->
         </div>
 
-        <!-- <div id="content">
-            <input type="text">
-            <input type="text">
-        </div> -->
-
+    <div>
+        <p>Numero di contratti attivi:    <?php   echo $i;   ?></p>
+        <p>Numero di contratti in attesa: <?php   echo $j;   ?></p>
+        <p>Numero di contratti ko: <?php   echo $z;   ?></p>
+    </div>
         
     </div>
     <!-- bootstrap js -->
